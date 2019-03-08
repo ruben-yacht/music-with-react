@@ -1,3 +1,8 @@
 .App {
   text-align: center;
+  overflow: auto;
+  white-space: nowrap;
+}
+body {
+  background-color: #eeeeee;
 }

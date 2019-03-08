@@ -1,44 +1,43 @@
 import React from 'react';
 import Tone from 'tone';
+import Track from './Track/Track'
 
 class Sequencer extends React.Component {
 
     constructor(props) {
         super(props);
-        this.togglePlayback = this.togglePlayback.bind(this);
-        this.state = {
-            isPlaying: false
-        };
+        this.createRows = this.createRows.bind(this);
+        Tone.Transport.loop = true;
+        Tone.Transport.loopEnd  = (this.props.steps * Tone.Transport.PPQ) + 'i';
+        this.sounds = this.props.sounds;
+
+        //only used for melody engine
+        this.scale = this.props.scale;
     }
 
-    togglePlayback() {
-        //Play all tracks
-        console.log("loaded:  " + this.x.buffer.loaded);
-        this.setState((state) => {
-            return {
-                isPlaying: !state.isPlaying
-            }
-        });
-
-        //Manage playing sequence
-
-        let context = this;
-
-        if (this.state.isPlaying) {
-            Tone.Transport.cancel();
-        } else {
-            Tone.Transport.scheduleRepeat(function (time) {
-                context.x.start();
-            }, "8n");
+    createRows(numRows, numSteps) {
+        let rows = [];
+        for (let i = 0; i < numRows; i++) {
+            rows.push(<Track key={"track"+i}
+                               ref={"track"+i}
+                               trackNumber={i}
+                               steps={numSteps}
+                               allowManualEdit={this.props.allowManualEdit}
+                               subDivision={"16n"}
+                               instrument={this.props.instrument}
+                               instrumentProps={this.props.instrumentProps}
+                               note={this.scale[i]}
+                               pattern={this.props.pattern[i]}
+            />);
         }
-
-        Tone.Transport.toggle();
+        return rows;
     }
 
     render() {
         return (
         <>
-            <p> sequencer </p>
+            <p>{this.props.name}</p>
+            {this.createRows(this.props.numRows, this.props.steps)}
         </>
         );
     }

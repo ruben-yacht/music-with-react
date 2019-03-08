@@ -1,0 +1,17 @@
+.inactiveFlashingButton {
+    background-color: #ffffff;
+    border: none;
+    width: 38px;
+    height: 38px;
+    margin-right: 4px;
+    outline: none;
+
+}
+
+.flashingButton {
+    background-color: orange;
+    border: none;
+    width: 38px;
+    height: 38px;
+    margin-right: 4px;
+}
